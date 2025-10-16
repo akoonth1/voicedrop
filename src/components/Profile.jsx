@@ -1,6 +1,7 @@
 import React from 'react';
 
 export default function Profile({
+  id = 1,
   name = 'Your Name',
   age = 30,
   picture = 'https://via.placeholder.com/120',
