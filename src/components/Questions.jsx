@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 export default function Questions({ id = 1 }) {
+  const [currentId, setCurrentId] = useState(id);
   const [question, setQuestion] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -14,8 +15,14 @@ export default function Questions({ id = 1 }) {
     },
     title: { margin: 0, fontSize: 16, fontWeight: 600 },
     body: { marginTop: 8, color: '#333' },
-    meta: { marginTop: 6, fontSize: 12, color: '#666' }
+    meta: { marginTop: 6, fontSize: 12, color: '#666' },
+    controls: { marginTop: 10, display: 'flex', gap: 8 }
   };
+
+  // keep currentId in sync if parent changes id prop
+  useEffect(() => {
+    setCurrentId(id);
+  }, [id]);
 
   useEffect(() => {
     let cancelled = false;
@@ -24,7 +31,7 @@ export default function Questions({ id = 1 }) {
       setLoading(true);
       setError(null);
       try {
-        const url = `http://localhost:3000/api/questions/questions/${id}`;
+        const url = `http://localhost:3000/api/questions/questions/${currentId}`;
         const res = await fetch(url);
         if (!res.ok) {
           const text = await res.text();
@@ -39,12 +46,12 @@ export default function Questions({ id = 1 }) {
           payload = payload.find(item => {
             return (
               // try matching multiple id fields
-              item.id === id ||
-              item.qid === id ||
-              item._id === id ||
-              String(item.id) === String(id) ||
-              String(item.qid) === String(id) ||
-              String(item._id) === String(id)
+              item.id === currentId ||
+              item.qid === currentId ||
+              item._id === currentId ||
+              String(item.id) === String(currentId) ||
+              String(item.qid) === String(currentId) ||
+              String(item._id) === String(currentId)
             );
           }) || payload[0];
         }
@@ -59,7 +66,9 @@ export default function Questions({ id = 1 }) {
     fetchQuestion();
 
     return () => { cancelled = true; };
-  }, [id]);
+  }, [currentId]);
+
+  const handleNext = () => setCurrentId(prev => prev + 1);
 
   if (loading) return <div style={styles.container}>Loading...</div>;
   if (error) return (
@@ -76,6 +85,10 @@ export default function Questions({ id = 1 }) {
       </div>
       <h3 style={styles.title}>{question?.question ?? 'Question not found'}</h3>
       {question?.set && <div style={styles.body}>Set: {question.set}</div>}
+
+      <div style={styles.controls}>
+        <button onClick={handleNext} disabled={loading}>Next</button>
+      </div>
     </div>
   );
 }
