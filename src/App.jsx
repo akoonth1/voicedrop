@@ -4,9 +4,10 @@ import Recorder from './components/Recorder'
 import Profile from './components/Profile'
 import Questions from './components/Questions'
 import Nav from './components/Nav'
+import LandingPage from './Pages/LandingPage'
 
 export default function App() {
-  const [path, setPath] = useState(() => window.location.pathname)
+  const [path, setPath] = useState(() => window.location.pathname || '/')
 
   useEffect(() => {
     const onPop = () => setPath(window.location.pathname)
@@ -16,6 +17,9 @@ export default function App() {
 
   const renderRoute = () => {
     switch (path) {
+      case '/':
+      case '/landing':
+        return <LandingPage />
       case '/profile':
         return <Profile />
       case '/recorder':
@@ -28,7 +32,7 @@ export default function App() {
   return (
     <>
       <Nav />
-      <main style={{ padding: 16 }}>
+      <main style={{ padding: 16, paddingTop: 72 }}>
         {renderRoute()}
       </main>
     </>
