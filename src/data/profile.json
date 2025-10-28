@@ -1,0 +1,17 @@
+{
+  "id": 1,
+  "name": "Alex Morgan",
+  "email": "alex@example.com",
+  "password": "password123",
+  "createdAt": "2025-10-21T12:00:00.000Z",
+  "messages": [
+    {
+      "from": "system",
+      "text": "Welcome to VoiceDrop!",
+      "timestamp": "2025-10-21T12:01:00.000Z"
+    }
+  ],
+  "profilePicture": "https://i.pravatar.cc/150?img=32",
+  "age": 29,
+  "bio": "Product designer who loves sound, coffee, and long walks. I build small tools that make everyday life slightly easier."
+}
